@@ -1,15 +1,12 @@
 const email = document.getElementById('email');
 const senha = document.getElementById('senha');
 const entrar = document.getElementById('inBtn');
-const cadastrar = document.getElementById('cadastraBtn');
 
-cadastrar.addEventListener('click',()=>{
-    window.location.href = 'cadastro.html';
-})
 
 function entrarStream(){
     if(email.value =="" || senha.value==""){
-        throw "Email ou senha inválidos!"
+        alert("Os campos devem ser preenchidos!");
+        throw "Os campos devem ser preenchidos!"
     } else {
         fetch('usuarios.json')
             .then(response =>{
@@ -20,21 +17,24 @@ function entrarStream(){
             })
             .then(data =>{
                 const usuarios = data.usuarios;
-                console.log(usuarios);
+                let cont = 0;
                 for(usuario of usuarios){
                     if(email.value == usuario.email){
                         if(senha.value == usuario.senha){
                             alert("Bem-vindo!");
+                            cont =0;
                             window.location.href = 'streaming.html';
                             break;
                         } else {
-                            alert("Email ou senha inválidos");
-                            break;
+                            cont +=1;
                         }
                     } else {
-                        alert("Email ou senha inválidos");
-                        break;
+                        cont +=1;
                     }
+                }
+
+                if(cont != 0){
+                    alert("Email ou senha inválidos!");
                 }
             })
             .catch(erro =>{
